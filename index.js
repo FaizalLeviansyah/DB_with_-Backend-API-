@@ -2,11 +2,8 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import db from './connection.js';
 import { response } from './response.js';
-
-
 // const db = require('connection.js')
-// const response = require('./response')
-
+// const response = require('./response')*+
 const app  = express();
 const PORT = 2000
 
@@ -14,21 +11,23 @@ const PORT = 2000
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    db.query("SELECT * FROM mahasiswa", (error, result) => {
+    const sql_mahasiswa = "SELECT * FROM mahasiswa"
+
+    db.query(sql_mahasiswa, (error, result) => {
         //hasil data dari mysql
         response(200, result, "get all data from mahasiswa", res)
     })
 })
 
-// app.get('/find',(req, res) => {
-//     console.log('find nim: ', SELECT)
-
-//     const sql = `SELECT full_name FROM mahasiswa WHERE nim = ${req.query.min}`
-//     db.query(sql, (error, result) => {
-//         response(200, result, "find mahasiswa name", res)
-//     })
+app.get('/find',(req, res) => {
+    const sql_mahasiswa = `SELECT full_name FROM mahasiswa WHERE nim = ${req.query.nim}`
+    console.log('find nim: ', req.query.nim)
     
-// })
+    db.query(sql_mahasiswa, (error, result) => {
+        response(200, result, "find mahasiswa name", res)
+    })
+    
+})
 
 app.post('/login', (req, res) => {
     console.log({requestFromOutside:req.body})
